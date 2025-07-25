@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8" />
     <title>Our boot.dev Hackathon entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 300px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+        select, input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <input type="text" id="textInput" placeholder="Enter text here" />
+        <select id="qualitySelect">
+            <option value="low">Low Quality</option>
+            <option value="medium">Medium Quality</option>
+            <option value="high">High Quality</option>
+        </select>
+        <button id="downloadBtn">Download</button>
+    </div>
+    <script>
+        document.getElementById('downloadBtn').onclick = function() {
+            const text = document.getElementById('textInput').value;
+            const quality = document.getElementById('qualitySelect').value;
+            const blob = new Blob([`Quality: ${quality}\n${text}`], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'output.txt';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        };
+    </script>
 </body>
 </html>
