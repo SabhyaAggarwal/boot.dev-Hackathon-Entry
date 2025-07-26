@@ -123,7 +123,7 @@ def download_video():
         app.logger.error(f"An unexpected error occurred: {e}")
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
-@app.route('/convert_mp4_to_mp3', methods=[POST])
+@app.route('/convert_mp4_to_mp3', methods=['POST'])
 def convert_mp4_to_mp3():
 
     data = request.get_json()
@@ -135,33 +135,37 @@ def convert_mp4_to_mp3():
     unique_video_id = str(uuid.uuid4())
     video_output_path_template = os.path.join(DOWNLOAD_DIR, unique_video_id + '.%(ext)s')
     try:
-    logging.info(f"Attempting to download video for MP3 conversion from: {video_url}")
-    yt_command = [
-        'yt-dlp', '-k',
-        '-f', bestaudio/best,
-        '-x',
-        '--audio-format', 'mp3',
-        '-o', video_output_path_template, video_url
-    ]
+        logging.info(f"Attempting to download video for MP3 conversion from: {video_url}")
+        yt_command = [
+            'yt-dlp', '-k',
+            '-f', bestaudio/best,
+            '-x',
+            '--audio-format', 'mp3',
+            '-o', video_output_path_template, video_url
+        ]
 
-    result = subprocess.run(
+        result = subprocess.run(
             yt_command,
             capture_output=True,
             text=True,
             check=True
         )
 
-    downloaded_audio_file = None
-    for line in result.stdout.splitlines()
-        if '[ExtractAudio] Destination:' in line:
-        downloaded_audio_file = line.split('to "')[1].split('"')[0].strip()
-        break
+        downloaded_audio_file = None
+        for line in result.stdout.splitlines():
+            if '[ExtractAudio] Destination:' in line:
+                downloaded_audio_file = line.split('to "')[1].split('"')[0].strip()
+                break
+            elif '[ExtractAudio] Convertung audio' in line:
+                downloaded_audio_file = line,split('to "')[1].split('"')[0].strip()
+                break
 
-    if downloaded_audio_file"
-        filename_from_ytdlp = os.path.basename(downloaded_audio_file)
-        full_download_path = os.path.join(DOWNLOAD_DIR, filename_from_ytdlp)
 
-        if not os.path.exists(full_downloaded_path):
+        if downloaded_audio_file:
+            filename_from_ytdlp = os.path.basename(downloaded_audio_file)
+            full_download_path = os.path.join(DOWNLOAD_DIR, filename_from_ytdlp)
+
+            if not os.path.exists(full_downloaded_path):
                 app.logger.error(f"yt-dlp reported '{downloaded_audio_file}', but file not found at '{full_downloaded_path}'")
                 app.logger.error(f"yt-dlp stdout: {result.stdout}")
                 app.logger.error(f"yt-dlp stderr: {result.stderr}")
