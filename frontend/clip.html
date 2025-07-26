@@ -22,10 +22,10 @@ document.getElementById('downloadBtn').onclick = async function() {
     }
     status.textContent = 'Requesting video from backend...';
     try {
-        const response = await fetch('http://localhost:8000/download', {
+        const response = await fetch('http://localhost:5000/download', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({ video_url: url })
         });
         if (!response.ok) throw new Error('Failed to download');
         const blob = await response.blob();
