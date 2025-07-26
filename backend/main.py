@@ -28,7 +28,7 @@ def download_video():
 
     try:
         yt_command = [
-            'yt-dlp',
+            'yt-dlp', '-k',
             '-f', 'bestvideo+bestaudio/best',
             '--merge-output-format', 'mp4',
             '-o', output_path_template, video_url
