@@ -1,120 +1,55 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Our boot.dev Hackathon entry</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    /* Custom styles for the loading spinner */
-    .loader {
-      border: 4px solid #f3f3f3; /* Light grey */
-      border-top: 4px solid #3498db; /* Blue */
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-      display: none; /* Hidden by default */
-    }
-
-    @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-    }
-    </style>
-  </head>
-  <body class="min-h-screen flex items-center justify-center relative overflow-hidden font-sans">
+</head>
+<body class="min-h-screen flex items-center justify-center relative overflow-hidden">
     <!-- Abstract SVG background -->
     <div class="absolute inset-0 -z-10">
-      <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-        <defs>
-          <radialGradient id="grad1" cx="50%" cy="50%" r="80%" fx="50%" fy="50%">
-            <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.5"/>
-            <stop offset="100%" stop-color="#fbc2eb" stop-opacity="0.3"/>
-          </radialGradient>
-        </defs>
-        <ellipse cx="400" cy="300" rx="350" ry="250" fill="url(#grad1)"/>
-        <ellipse cx="650" cy="100" rx="120" ry="80" fill="#fbc2eb" fill-opacity="0.3"/>
-        <ellipse cx="150" cy="500" rx="100" ry="60" fill="#a5b4fc" fill-opacity="0.2"/>
-      </svg>
+        <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <defs>
+                <radialGradient id="grad1" cx="50%" cy="50%" r="80%" fx="50%" fy="50%">
+                    <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.5"/>
+                    <stop offset="100%" stop-color="#fbc2eb" stop-opacity="0.3"/>
+                </radialGradient>
+            </defs>
+            <ellipse cx="400" cy="300" rx="350" ry="250" fill="url(#grad1)"/>
+            <ellipse cx="650" cy="100" rx="120" ry="80" fill="#fbc2eb" fill-opacity="0.3"/>
+            <ellipse cx="150" cy="500" rx="100" ry="60" fill="#a5b4fc" fill-opacity="0.2"/>
+        </svg>
     </div>
-    <div class="flex flex-col gap-4 w-full max-w-xs mx-auto p-8 rounded-xl shadow-lg bg-white bg-opacity-80 backdrop-blur-sm">
-      <h1 class="text-2xl font-bold text-center text-gray-800">Video Downloader</h1>
-      <input type="text" id="videoUrlInput" placeholder="Enter video URL here" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-
-      <!-- The quality select is kept for future use if you implement quality selection in backend -->
-      <select id="qualitySelect" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 hidden">
-        <option value="low">Low Quality</option>
-        <option value="medium">Medium Quality</option>
-        <option value="high">High Quality</option>
-      </select>
-
-      <button id="downloadBtn" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition flex items-center justify-center gap-2">
-        Download
-        <div id="loader" class="loader"></div>
-      </button>
-      <p id="message" class="text-center text-sm text-gray-700"></p>
+    <div class="flex flex-col gap-4 w-full max-w-xs mx-auto p-8 rounded-xl shadow-lg bg-white bg-opacity-80 backdrop-blur">
+        <input type="text" id="textInput" placeholder="Enter text here" class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <select id="qualitySelect" class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="low">Low Quality</option>
+            <option value="medium">Medium Quality</option>
+            <option value="high">High Quality</option>
+        </select>
+        <button id="downloadBtn" class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition">Download</button>
     </div>
-
+    <div class="flex flex-col gap-3 w-full max-w-xs mx-auto mt-6 p-6 rounded-xl shadow bg-white bg-opacity-90 backdrop-blur-sm border border-blue-200">
+        <h2 class="text-xl font-bold text-blue-700 mb-1 tracking-tight">What Makes This Project Awesome?</h2>
+        <ul class="list-disc list-inside text-gray-700 text-base space-y-1">
+            <li><span class="font-semibold text-blue-600">Universal Video Downloads:</span> Grab videos from all major social media platforms.</li>
+            <li><span class="font-semibold text-blue-600">No Ads, No Nonsense:</span> 100% clean experience—no popups, no distractions.</li>
+            <li><span class="font-semibold text-blue-600">Flexible Formats:</span> Download in your favorite format or extract audio only.</li>
+            <li><span class="font-semibold text-blue-600">Quality Control:</span> Choose the quality you want—HD, SD, or audio-only.</li>
+            <li><span class="font-semibold text-blue-600">Fast & Reliable:</span> Simple, powerful, and always works when you need it.</li>
+        </ul>
+    </div>
     <script>
-    document.getElementById('downloadBtn').onclick = async function() {
-    const videoUrl = document.getElementById('videoUrlInput').value;
-    const messageElement = document.getElementById('message');
-    const downloadButton = document.getElementById('downloadBtn');
-    const loader = document.getElementById('loader');
-
-    messageElement.textContent = ''; // Clear previous messages
-    messageElement.style.color = ''; // Reset message color
-    downloadButton.disabled = true; // Disable button during download
-    loader.style.display = 'block'; // Show loader
-
-    if (!videoUrl) {
-    messageElement.textContent = 'Please enter a video URL.';
-    messageElement.style.color = 'red';
-    downloadButton.disabled = false;
-    loader.style.display = 'none';
-    return;
-    }
-
-    try {
-    // Send the video URL to your Flask backend
-    const response = await fetch('http://127.0.0.1:5000/download', {
-    method: 'POST',
-    headers: {
-    'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ video_url: videoUrl })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-    // If the response is not OK (e.g., 400, 500 status)
-    throw new Error(data.error || 'Failed to download video.');
-    }
-
-    // If download is successful, create a temporary link and click it
-    const downloadLink = document.createElement('a');
-    // Prepend the backend URL to the download_link returned by the server
-    downloadLink.href = `http://127.0.0.1:5000${data.download_link}`;
-    downloadLink.download = data.filename; // Suggests a filename for the browser
-    document.body.appendChild(downloadLink); // Append to body to make it clickable
-    downloadLink.click(); // Programmatically click the link
-    document.body.removeChild(downloadLink); // Clean up the temporary link
-
-    messageElement.textContent = 'Video download initiated!';
-    messageElement.style.color = 'green';
-
-    } catch (error) {
-    console.error('Error:', error);
-    messageElement.textContent = `Error: ${error.message}`;
-    messageElement.style.color = 'red';
-    } finally {
-    downloadButton.disabled = false; // Re-enable button
-    loader.style.display = 'none'; // Hide loader
-    }
-    };
+        document.getElementById('downloadBtn').onclick = function() {
+            const text = document.getElementById('textInput').value;
+            const quality = document.getElementById('qualitySelect').value;
+            const blob = new Blob([`Quality: ${quality}\n${text}`], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'output.txt';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        };
     </script>
-  </body>
+</body>
 </html>
-
