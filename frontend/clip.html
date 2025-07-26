@@ -1,0 +1,23 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Clip Video - Our boot.dev Hackathon entry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
+    <div class="flex flex-col gap-6 w-full max-w-lg mx-auto p-8 rounded-xl shadow-lg bg-white bg-opacity-90 backdrop-blur">
+        <h1 class="text-2xl font-bold text-blue-700 mb-2">Clip Your Video</h1>
+        <input type="text" placeholder="Enter video URL" class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div class="flex gap-2">
+            <input type="text" placeholder="Start time (e.g. 00:01:23)" class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input type="text" placeholder="End time (e.g. 00:02:34)" class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <button class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition">Preview Clip</button>
+        <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center text-gray-500 mt-4">
+            <!-- Video preview will go here -->
+            <span>Preview will appear here</span>
+        </div>
+    </div>
+</body>
+</html>
