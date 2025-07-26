@@ -4,13 +4,31 @@ import subprocess
 import os
 import uuid
 import shutil
+import threading
+import time
+import logging
 
 app = Flask(__name__)
 CORS(app)
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 DOWNLOAD_DIR = 'Downloads'
 if not os.path.exists(DOWNLOAD_DIR):
     os.makedirs(DOWNLOAD_DIR)
+CLEANUP_DELAY_SECONDS = 600
+
+def cleanup_delay(file_path, delay):
+    logging.info(f"Scheduling file '{file_path}' for deletion.")
+    time.sleep(delay)
+    try:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            logging.info(f"Successfully deleted scheduled file: '{file_path}'")
+        else:
+            logging.warning(f"Attempted to delete file '{file_path}', but it no longer exists.")
+    except Exception as e:
+        logging.error(f"Error deleting file '{file_path}' : {e}")
 
 @app.route('/')
 def index():
@@ -50,6 +68,18 @@ def download_video():
                 downloaded_file = line.split('[Merger] Merging formats into')[1].strip().replace('"', '')
                 break
 
+        if downloaded_file:
+            filename_from_ytdlp = os.path.basename(downloaded_file)
+            full_download_path = os.path.join(DOWNLOAD_DIR, filename_from_ytdlp)
+
+            if not os.path.exists(full_download_path):
+                app.logger.error(f"yt-dlp reported '{downloaded_file}', but file not found at '{full_download_path}'")
+                app.logger.error(f"yt-dlp stdout: {result.stdout}")
+                app.logger.error(f"yt-dlp stderr: {result.stderr}")
+                return jsonify({"error": "Failed to determine download file path or file not found."}),500
+
+            downloaded_file = full_download_path
+
         if not downloaded_file or not os.path.exists(downloaded_file):
             app.logger.error(f"yt-dlp output: {result.stdout}")
             app.logger.error(f"yt-dlp error: {result.stderr}")
@@ -57,7 +87,15 @@ def download_video():
 
         filename = os.path.basename(downloaded_file)
 
+        cleanup_thread = threading.Thread(
+            target = cleanup_delay,
+            args = (downloaded_file, CLEANUP_DELAY_SECONDS) 
+        )
+        cleanup_thread.daemon = True
+        cleanup_thread.start()
+
         download_link = f"/downloads/{filename}"
+        logging.info(f"Video '{filename}' downloaded successfully. Link {download_link}")
         return jsonify({
             "message": "Video downloaded successfully",
             "filename": filename,
@@ -80,13 +118,17 @@ def serve_downloaded_file(filename):
     try:
         return send_from_directory(DOWNLOAD_DIR, filename, as_attachment=True)
     except FileNotFoundError:
+        logging.warning(f"Requested file '{filename}' not found in '{DOWNLOAD_DIR}'.")
         return jsonify({"error": "File not found."}), 404
 
 @app.route('/cleanup', methods=['POST'])
 def cleanup_downloads():
     try:
-        shutil.rmtree(DOWNLOAD_DIR)
+        if os.path.exists(DOWNLOAD_DIR):
+            shutil.rmtree(DOWNLOAD_DIR)
+            logging.info(f"Removed existing '{DOWNLOAD_DIR}' directory.")
         os.makedirs(DOWNLOAD_DIR)
+        logging.info(f"Recreated empty '{DOWNLOAD_DIR}' directory.")
         return jsonify({"message": "Download directory cleaned up."}), 200
     except Exception as e:
         app.logger.error(f"Error during cleanup: {e}")
@@ -94,5 +136,4 @@ def cleanup_downloads():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
 
