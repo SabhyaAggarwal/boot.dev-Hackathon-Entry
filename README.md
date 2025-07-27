@@ -2,7 +2,7 @@
 
 A simple, web-based tool to download videos from major social media platforms. You can also convert videos to MP3 and clip specific parts of a video — all in one place.
 
-This project was built for the boot.dev hackathon and is hosted on Heroku.
+This project was built for the boot.dev hackathon and is hosted on Render.
 
 ---
 
@@ -31,7 +31,7 @@ This project was built for the boot.dev hackathon and is hosted on Heroku.
   - `yt-dlp` for downloading  
   - `ffmpeg` for conversion and clipping
 
-Everything runs on a lightweight Flask server deployed to **Heroku**, so no setup is needed on your device.
+Everything runs on a lightweight Flask server deployed to **Render**, so no setup is needed on your device.
 
 ---
 
@@ -62,7 +62,7 @@ Everything runs on a lightweight Flask server deployed to **Heroku**, so no setu
 - **Frontend**: HTML, CSS, Javascript
 - **Video Downloader**: [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)  
 - **Conversion/Clipping**: [`ffmpeg`](https://ffmpeg.org/)  
-- **Hosting**: [Heroku](https://www.heroku.com)
+- **Hosting**: [Render](https://www.Render.com)
 
 ---
 
