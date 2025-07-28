@@ -71,5 +71,6 @@ Everything runs on a lightweight Flask server deployed to **Render**, so no setu
 ## Disclaimer
 
 - Note : Try with small videos from platforms other than youtube for now please, free tier server can't handle much load.
+- Clipping isn't working for some reason, can't figure out now, will fix later.
 - This tool is for **educational and personal use only**
 - Please respect the **terms of service** of the platforms you download content from
