@@ -2,7 +2,7 @@
 
 A simple, web-based tool to download videos from major social media platforms. You can also convert videos to MP3 and clip specific parts of a video — all in one place.
 
-This project was built for the boot.dev hackathon and is hosted on Render.
+This project was built for the boot.dev hackathon, the forntend is hosted on Netlify and backend is hosted Render.
 
 ---
 
@@ -62,7 +62,7 @@ Everything runs on a lightweight Flask server deployed to **Render**, so no setu
 - **Frontend**: HTML, CSS, Javascript
 - **Video Downloader**: [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)  
 - **Conversion/Clipping**: [`ffmpeg`](https://ffmpeg.org/)  
-- **Hosting**: [Render](https://www.Render.com)
+- **Hosting**: [Netlify](https://www.netlify.com), [Render](https://www.Render.com)
 
 ---
 
