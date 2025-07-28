@@ -1,8 +1,10 @@
-# Universal Video Downloader
+# Flick-Fetch - A Universal Video Downloader
 
 A simple, web-based tool to download videos from major social media platforms. You can also convert videos to MP3 and clip specific parts of a video — all in one place.
 
 This project was built for the boot.dev hackathon, the forntend is hosted on Netlify and backend is hosted Render.
+
+[Project link](https://flick-fetch/netlify.app)
 
 ---
 
@@ -68,5 +70,6 @@ Everything runs on a lightweight Flask server deployed to **Render**, so no setu
 
 ## Disclaimer
 
+- Note : Try with small videos from platforms other than youtube for now please, free tier server can't handle much load.
 - This tool is for **educational and personal use only**
 - Please respect the **terms of service** of the platforms you download content from
