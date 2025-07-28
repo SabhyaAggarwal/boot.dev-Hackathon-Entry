@@ -32,7 +32,7 @@ def cleanup_delay(file_path, delay):
 
 @app.route('/')
 def index():
-    return "Video downloader backend is running"
+    return "Flick-Fetch backend is running"
 
 @app.route('/download', methods=['POST'])
 def download_video():
