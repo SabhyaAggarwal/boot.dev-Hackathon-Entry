@@ -2,7 +2,7 @@
 
 A simple, web-based tool to download videos from major social media platforms. You can also convert videos to MP3 and clip specific parts of a video — all in one place.
 
-This project was built for the boot.dev hackathon, the forntend is hosted on Netlify and backend is hosted Render.
+This project was built for the boot.dev hackathon, the frontend is hosted on Netlify and backend is hosted Render.
 
 [Project link](https://flick-fetch/netlify.app)
 
