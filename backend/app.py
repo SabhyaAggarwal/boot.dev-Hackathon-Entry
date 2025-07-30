@@ -138,7 +138,7 @@ def convert_mp4_to_mp3():
         logging.info(f"Attempting to download video for MP3 conversion from: {video_url}")
         yt_command = [
             'yt-dlp', '-k',
-            '-f', bestaudio/best,
+            '-f', 'bestaudio/best',
             '-x',
             '--audio-format', 'mp3',
             '-o', video_output_path_template, video_url
@@ -156,8 +156,8 @@ def convert_mp4_to_mp3():
             if '[ExtractAudio] Destination:' in line:
                 downloaded_audio_file = line.split('to "')[1].split('"')[0].strip()
                 break
-            elif '[ExtractAudio] Convertung audio' in line:
-                downloaded_audio_file = line,split('to "')[1].split('"')[0].strip()
+            elif '[ExtractAudio] Converting audio' in line:
+                downloaded_audio_file = line.split('to "')[1].split('"')[0].strip()
                 break
 
 
@@ -165,13 +165,13 @@ def convert_mp4_to_mp3():
             filename_from_ytdlp = os.path.basename(downloaded_audio_file)
             full_download_path = os.path.join(DOWNLOAD_DIR, filename_from_ytdlp)
 
-            if not os.path.exists(full_downloaded_path):
-                app.logger.error(f"yt-dlp reported '{downloaded_audio_file}', but file not found at '{full_downloaded_path}'")
+            if not os.path.exists(full_download_path):
+                app.logger.error(f"yt-dlp reported '{downloaded_audio_file}', but file not found at '{full_download_path}'")
                 app.logger.error(f"yt-dlp stdout: {result.stdout}")
                 app.logger.error(f"yt-dlp stderr: {result.stderr}")
                 return jsonify({"error": "Failed to determine downloaded audio file path or file not found after conversion."}), 500
             
-            downloaded_audio_file = full_downloaded_path
+            downloaded_audio_file = full_download_path
 
         if not downloaded_audio_file or not os.path.exists(downloaded_audio_file):
             app.logger.error(f"yt-dlp output: {result.stdout}")
@@ -181,7 +181,7 @@ def convert_mp4_to_mp3():
         filename = os.path.basename(downloaded_audio_file)
         
         cleanup_thread = threading.Thread(
-            target=cleanup_file_after_delay,
+            target=cleanup_delay,
             args=(downloaded_audio_file, CLEANUP_DELAY_SECONDS)
         )
         cleanup_thread.daemon = True
@@ -219,7 +219,7 @@ def clip_video():
     end_time = data['end_time']
 
     unique_id = str(uuid.uuid4())
-    downloaded_video_path = os.path.join(DOWNLOAD_DIR, unique_download_id + '.mp4') # Force mp4 for clipping
+    downloaded_video_path = os.path.join(DOWNLOAD_DIR, unique_id + '.mp4') # Force mp4 for clipping
 
     try:
         logging.info(f"Attempting to download video for clipping from: {video_url}")
@@ -268,14 +268,14 @@ def clip_video():
             return jsonify({"error": "Failed to create clipped video."}), 500
 
         cleanup_thread_original = threading.Thread(
-            target=cleanup_file_afterdelay,
+            target=cleanup_delay,
             args=(downloaded_video_path, CLEANUP_DELAY_SECONDS)
         )
         cleanup_thread_original.daemon = True
         cleanup_thread_original.start()
 
         cleanup_thread_clipped = threading.Thread(
-            target=cleanup_file_afterdelay,
+            target=cleanup_delay,
             args=(clipped_video_path, CLEANUP_DELAY_SECONDS)
         )
         cleanup_thread_clipped.daemon = True
